@@ -28,7 +28,6 @@ test('setup', async t => {
 
 
   token = result.body.token
-  console.log(token)
   t.ok(token, 'user logged in, jwt aquired')
 })
 
@@ -50,16 +49,16 @@ test('post /vehicles - no jwt... 401', async t => {
 test('post /vehicles - good jwt, bad request body', async t => {
   t.plan(2)
   try {
-    await tiny.post({ 
-    url: 'http://localhost:3333/api/vehicles', 
-    data: {
-      id: 'vehicle-1',
-      name: '',
-    },
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
+    const response = await tiny.post({ 
+      url: 'http://localhost:3333/api/vehicles', 
+      data: {
+        id: 'vehicle-1',
+        name: '',
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
   } catch (ex) {
     t.equal(ex.statusCode, 400, 'got 400 response')
     t.equal(ex.body.details.length, 1, 'got 1 error')

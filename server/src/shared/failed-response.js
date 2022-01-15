@@ -1,4 +1,4 @@
-module.exports = async function ({statusCode = 400, message, body}) {
+module.exports = function ({statusCode = 400, message, body}) {
   if(message && body) {
     console.error(`response should contain either a message or a body. Using message: ${message}`)
   }

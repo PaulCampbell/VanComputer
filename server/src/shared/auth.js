@@ -1,10 +1,15 @@
+let arc = require('@architect/functions')
 let { tables } = require('@architect/functions')
 const nJwt = require('njwt');
 
-module.exports = async function (req) {
+const failedResponse = require('./failed-response')
+
+
+
+module.exports = async function (req, res, next) {
   const authHeader = req.headers.authorization;
   if(!authHeader) {
-    throw new Error('no authorization header')
+    return res(failedResponse({statusCode: 401, message: 'no authorization header'}))
   }
 
   const token = authHeader.split(' ')[1];
@@ -12,7 +17,7 @@ module.exports = async function (req) {
   try{
     verifiedJwt = nJwt.verify(token, process.env.JWT_SIGNING_KEY);
   } catch(e) {
-    throw new Error(e.message)
+    return res(failedResponse({statusCode: 401, message: e.message}))
   }
 
   const { sub } = verifiedJwt.body;
@@ -20,8 +25,10 @@ module.exports = async function (req) {
   const user = await data.users.get({userId: sub.split('/')[1]});
 
   if(!user) {
-      throw new Error('user not found')
+      return res(failedResponse({statusCode: 401, message: 'User not found'}))
   }
 
-  return user
+  req.user = user
+  next()
 }
+

@@ -1,5 +1,6 @@
 let { tables } = require('@architect/functions')
-const tryAuthUser = require('@architect/shared/try-auth-user')
+let arc = require('@architect/functions')
+const auth = require('@architect/shared/auth')
 const Joi = require('joi');
 
 const failedResponse = require('@architect/shared/failed-response')
@@ -9,16 +10,11 @@ const vehicleSchema = Joi.object({
   name: Joi.string().min(3).required()
 });
 
-exports.handler = async function http (req) {
-  let user
-  try {
-    user = await tryAuthUser(req)
-  } catch (ex) {
 
-    return failedResponse({statusCode: 401, message: ex.message})
-  }
+exports.handler = arc.http(auth, handler) 
 
-  const vehicle = JSON.parse(req.body)
+async function handler (req, res) {
+  const vehicle = req.body
   const options = {
         abortEarly: false,
         allowUnknown: true,
@@ -26,23 +22,22 @@ exports.handler = async function http (req) {
     };
 
   const { error, value  } = vehicleSchema.validate(vehicle, options);
-
   if(error) {
-    return failedResponse({statusCode: 400, body: error})
+    return res(failedResponse({statusCode: 400, body: error}))
   }
   const data = await tables()
 
   const v = await data.vehicles.put({
-    userId: user.userId,
+    userId: req.user.userId,
     name: value.name,
     vehicleId: value.id
   })
 
-  return {
+  return res({
     statusCode: 201,
     headers:{
       'content-type': 'application/json'
     },
     body: JSON.stringify(v)
-  }
+  })
 }
