@@ -9,8 +9,13 @@ exports.handler = arc.http.async(http)
 
 async function http(req) {
   const { email, password } = req.body
+  if (!email || !password) {
+    return failedResponse({statusCode: 401, message: 'login failed'})
+  }
   let data = await tables()
-  const users = await data.users.query({
+  let users
+
+  users = await data.users.query({
     IndexName: 'usersByEmail',
     KeyConditionExpression: 'email = :email',
     ExpressionAttributeValues: { ':email': email.toLowerCase() }
