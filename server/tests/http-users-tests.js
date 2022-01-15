@@ -39,6 +39,32 @@ test('post /users fail', async t => {
   }
 })
 
+test('post /users duplicate email address', async t => {
+  t.plan(3)
+  try {
+    const response1 = await tiny.post({ 
+      url: 'http://localhost:3333/api/users', 
+      data: JSON.stringify({
+        email: 'duplicate@test.com',
+        password: 'password123',
+        confirmPassword: 'password123'
+      })
+    })
+    t.ok(response1)
+    await tiny.post({ 
+      url: 'http://localhost:3333/api/users', 
+      data: JSON.stringify({
+        email: 'duplicate@test.com',
+        password: 'password123',
+        confirmPassword: 'password123'
+      })
+    })
+  } catch (ex) {
+    t.equal(ex.body.details.length, 1, 'got 1 errors')
+    t.equal(ex.statusCode, 400, 'got 400 response')
+  }
+})
+
 test('teardown', async t => {
   t.plan(1)
   await sandbox.end()

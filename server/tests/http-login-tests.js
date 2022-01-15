@@ -31,7 +31,7 @@ test('post /login success', async t => {
   })
 
   t.ok(result, 'got 200 response')
-  t.ok(JSON.parse(result.body).token, 'token exists')
+  t.ok(result.body.token, 'token exists')
   t.ok(result.headers['set-cookie'], 'set cookie header exists')
 })
 
@@ -46,7 +46,7 @@ test('post /login fail', async t => {
       }
     })
   } catch (ex) {
-    t.equal(JSON.parse(ex.body).details.length, 1, 'got 1 error')
+    t.equal(ex.body.details.length, 1, 'got 1 error')
     t.equal(ex.statusCode, 401, 'got 401 response')
   }
 })

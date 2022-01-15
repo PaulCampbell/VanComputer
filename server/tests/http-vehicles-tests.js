@@ -27,7 +27,7 @@ test('setup', async t => {
   })
 
 
-  token = JSON.parse(result.body).token
+  token = result.body.token
   console.log(token)
   t.ok(token, 'user logged in, jwt aquired')
 })

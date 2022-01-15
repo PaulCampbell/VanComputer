@@ -6,6 +6,8 @@ let userSchema = require('@architect/shared/user-schema')
 
 let hashPassword = require('@architect/shared/hash-password')
 
+const failedResponse = require('@architect/shared/failed-response')
+
 exports.handler = arc.http.async(http)
 
 async function http(req) {
@@ -21,13 +23,17 @@ async function http(req) {
   const { error,value  } = userSchema.validate(user, options);
 
   if(error) {
-    return {
-      statusCode: 400,
-      headers:{
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify(error)
-    }
+    return failedResponse({statusCode: 400, body: error})
+  }
+
+  const users = await data.users.query({
+    IndexName: 'usersByEmail',
+    KeyConditionExpression: 'email = :email',
+    ExpressionAttributeValues: { ':email': value.email.toLowerCase() }
+  })
+
+  if(users.Items.length > 0) {
+    return failedResponse({statusCode: 400, message: 'User already exists'})
   }
   
   const userId = uuidv4();
