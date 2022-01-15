@@ -25,7 +25,7 @@ test('post /login success', async t => {
   let result = await tiny.post({ 
     url: 'http://localhost:3333/login', 
     data: {
-      email: 'test@test.com',
+      email: 'Test@test.com',
       password: 'password123'
     }
   })

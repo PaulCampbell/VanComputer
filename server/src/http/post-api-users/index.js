@@ -35,7 +35,7 @@ async function http(req) {
   
   await data.users.put({
     userId,
-    email: value.email,
+    email: value.email.toLowerCase(),
     hashedPassword
   })
 

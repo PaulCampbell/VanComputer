@@ -5,13 +5,13 @@ const nJwt = require('njwt');
 
 exports.handler = async function http (req) {
   console.log(`post /login ${req.body}`)
-  const { email, password} = JSON.parse(req.body)
+  const { email, password } = JSON.parse(req.body)
   let data = await tables()
   const users = await data.users.query(
     {
       IndexName: 'usersByEmail',
       KeyConditionExpression: 'email = :email',
-      ExpressionAttributeValues: { ':email': email }
+      ExpressionAttributeValues: { ':email': email.toLowerCase() }
     })
 
   if (!users.Count === 1) {
