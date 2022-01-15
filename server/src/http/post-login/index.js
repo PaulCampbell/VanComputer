@@ -2,7 +2,6 @@ let { tables } = require('@architect/functions')
 let bcrypt = require('bcryptjs')
 
 const nJwt = require('njwt');
-
 const failedResponse = require('@architect/shared/failed-response')
 
 exports.handler = async function http (req) {
