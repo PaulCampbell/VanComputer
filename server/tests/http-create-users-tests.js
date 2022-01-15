@@ -12,11 +12,12 @@ test('post /users success', async t => {
   t.plan(2)
   let result = await tiny.post({ 
       url: 'http://localhost:3333/api/users', 
-      data: JSON.stringify({
+      data: {
         email: 'test@test.com',
         password: 'password123',
         confirmPassword: 'password123'
-      })
+      },
+      headers: {'content-type': 'application/json'}
   })
   t.ok(result, 'got 201 response')
   t.ok(result.headers.location, 'location header exists')
@@ -27,11 +28,11 @@ test('post /users fail', async t => {
   try {
     await tiny.post({ 
       url: 'http://localhost:3333/api/users', 
-      data: JSON.stringify({
+      data: {
         email: 'not an email',
         password: 'password123',
         confirmPassword: 'doesn\'t match'
-      })
+      }
     })
   } catch (ex) {
     t.equal(ex.body.details.length, 2, 'got 2 errors')
@@ -44,20 +45,20 @@ test('post /users duplicate email address', async t => {
   try {
     const response1 = await tiny.post({ 
       url: 'http://localhost:3333/api/users', 
-      data: JSON.stringify({
+      data:{
         email: 'duplicate@test.com',
         password: 'password123',
         confirmPassword: 'password123'
-      })
+      }
     })
     t.ok(response1)
     await tiny.post({ 
       url: 'http://localhost:3333/api/users', 
-      data: JSON.stringify({
+      data: {
         email: 'duplicate@test.com',
         password: 'password123',
         confirmPassword: 'password123'
-      })
+      }
     })
   } catch (ex) {
     t.equal(ex.body.details.length, 1, 'got 1 errors')

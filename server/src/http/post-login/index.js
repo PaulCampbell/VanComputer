@@ -1,11 +1,14 @@
+let arc = require('@architect/functions')
 let { tables } = require('@architect/functions')
 let bcrypt = require('bcryptjs')
 
 const nJwt = require('njwt');
 const failedResponse = require('@architect/shared/failed-response')
 
-exports.handler = async function http (req) {
-  const { email, password } = JSON.parse(req.body)
+exports.handler = arc.http.async(http)
+
+async function http(req) {
+  const { email, password } = req.body
   let data = await tables()
   const users = await data.users.query({
     IndexName: 'usersByEmail',

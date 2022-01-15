@@ -11,7 +11,8 @@ const failedResponse = require('@architect/shared/failed-response')
 exports.handler = arc.http.async(http)
 
 async function http(req) {
-  const user = JSON.parse(req.body);
+  const user = req.body;
+
   let data = await tables()
   const options = {
         abortEarly: false,

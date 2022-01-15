@@ -3,11 +3,11 @@ const tiny = require('tiny-json-http')
 exports.createUser = async function createUser ({email, password}) {
   const createUserResponse = await tiny.post({ 
     url: 'http://localhost:3333/api/users', 
-    data: JSON.stringify({
+    data: {
       email,
       password,
       confirmPassword: password
-    })
+    }
   })
   return createUserResponse
 }
@@ -19,7 +19,6 @@ exports.loginUser = async function loginUser ({email, password}) {
       password
     }
   })
-  
   return result.body
 }
 

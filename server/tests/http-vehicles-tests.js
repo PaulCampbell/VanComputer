@@ -24,10 +24,10 @@ test('post /vehicles - no jwt... 401', async t => {
   try {
     await tiny.post({ 
     url: 'http://localhost:3333/api/vehicles', 
-    data: JSON.stringify({
+    data: {
         id: 'vehicle-1',
         name: 'Earnie the Camper',
-      })
+      }
     })
   } catch (ex) {
     t.equal(ex.statusCode, 401, 'got 401 response')

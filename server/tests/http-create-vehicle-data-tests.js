@@ -33,11 +33,11 @@ test('post /vehicle-data/:vehicleId/data - all good!', async t => {
 
   const response = await tiny.post({ 
     url: 'http://localhost:3333/api/vehicles/vehicle-1/data',
-    data: JSON.stringify({
+    data: {
       location: { longitude: -122.4194155, latitude: 37.7749295 },
       temperature: 17,
       humidity: 0.5,
-    }),
+    },
     headers: {
       Authorization: `Bearer ${token}`
     }
