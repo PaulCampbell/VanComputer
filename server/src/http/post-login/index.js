@@ -31,14 +31,17 @@ exports.handler = async function http (req) {
     scope: "self"
   }
   const jwt = nJwt.create(claims,process.env.JWT_SIGNING_KEY);
-  jwt.setExpiration();
+  const oneYearFromNow = new Date();
+  const now = new Date();
+  oneYearFromNow.setYear(now.getYear() + 1);
+  jwt.setExpiration(oneYearFromNow);
   
   const token = jwt.compact();
 
   return {
     statusCode: 200,
     headers: {
-      'set-cookie': token
+      'set-cookie': `access_token=${token}; domain=${process.env.ROOT_URL}; HttpOnly; expires=${oneYearFromNow.toUTCString()};`,
     },
     body: JSON.stringify({
       token

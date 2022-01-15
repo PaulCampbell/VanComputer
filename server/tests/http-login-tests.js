@@ -51,6 +51,15 @@ test('post /login fail', async t => {
   }
 })
 
+test('post /logout - remove cookie', async t => {
+  t.plan(2)
+  const result = await tiny.post({ 
+    url: 'http://localhost:3333/logout'
+  })
+  t.ok(result, 'got 200 response')
+  t.ok(result.headers['set-cookie'], 'set cookie header exists')
+})
+
 test('teardown', async t => {
   t.plan(1)
   await sandbox.end()
