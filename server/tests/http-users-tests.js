@@ -25,7 +25,7 @@ test('post /users success', async t => {
 test('post /users fail', async t => {
   t.plan(2)
   try {
-    let result = await tiny.post({ 
+    await tiny.post({ 
       url: 'http://localhost:3333/api/users', 
       data: JSON.stringify({
         email: 'not an email',

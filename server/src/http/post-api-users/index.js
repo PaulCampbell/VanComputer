@@ -1,17 +1,17 @@
 let arc = require('@architect/functions')
 let { v4: uuidv4 } = require('uuid');
 let { tables } = require('@architect/functions')
-let bcrypt = require('bcryptjs')
 
 let userSchema = require('@architect/shared/user-schema')
+
+let hashPassword = require('@architect/shared/hash-password')
 
 exports.handler = arc.http.async(http)
 
 async function http(req) {
-  console.log(`post /users ${JSON.stringify(req.body)}`)
   const user = JSON.parse(req.body);
+  
   let data = await tables()
-
   const options = {
         abortEarly: false,
         allowUnknown: true,
@@ -28,8 +28,8 @@ async function http(req) {
   }
   
   const userId = uuidv4();
-  const hashedPassword = hashPassword(value.password);
-
+  const hashedPassword = await hashPassword(value.password);
+  
   await data.users.put({
     userId,
     email: value.email,
@@ -39,20 +39,7 @@ async function http(req) {
   return {
     statusCode: 201,
     headers: {
-      location: `/users/${userId}`
+      location: `${process.env.ROOT_URL}/users/${userId}`
     }
   };
 };
-
-
-let hashPassword = async function (plaintextPassword) {
-  return new Promise((resolve, reject) => {
-    bcrypt.genSalt(10, (err, salt) => {
-      if (err) reject(err)
-      bcrypt.hash(plaintextPassword, salt, (error, hash) => {
-        if (error) reject(error)
-        resolve(hash)
-      })
-    })
-  })
-}

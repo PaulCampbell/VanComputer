@@ -27,3 +27,9 @@ vehicles
 vehicleData
   vehicleId *String
   dateTime **String
+
+
+@tables-indexes
+users
+  email *String
+  name usersByEmail
