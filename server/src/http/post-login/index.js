@@ -32,8 +32,8 @@ exports.handler = async function http (req) {
   }
   const jwt = nJwt.create(claims,process.env.JWT_SIGNING_KEY);
   const oneYearFromNow = new Date();
-  const now = new Date();
-  oneYearFromNow.setYear(now.getYear() + 1);
+  oneYearFromNow.setYear(oneYearFromNow.getFullYear() + 1);
+  console.log({oneYearFromNow})
   jwt.setExpiration(oneYearFromNow);
   
   const token = jwt.compact();

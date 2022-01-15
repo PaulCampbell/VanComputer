@@ -29,7 +29,7 @@ exports.handler = async function http (req) {
           Get started by editing this file at:
         </p>
         <code>
-          src/http/get-api-users/index.js
+          src/http/get-api-users-000userId/index.js
         </code>
       </div>
       <div>

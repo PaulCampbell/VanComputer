@@ -6,10 +6,9 @@ post /logout
 post /login
 
 post /api/users
-get /api/users
+get /api/users/:userId
 
 post /api/vehicles
-get /api/vehicles
 
 post /api/vehicles/:vehicleId/data
 

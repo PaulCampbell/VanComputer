@@ -23,6 +23,9 @@ async function http(req) {
   if(error) {
     return {
       statusCode: 400,
+      headers:{
+        'content-type': 'application/json'
+      },
       body: JSON.stringify(error)
     }
   }
