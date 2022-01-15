@@ -1,54 +1,18 @@
 import './App.css';
-import { useState } from 'react';
+import * as React from "react";
+import { Routes, Route, Link, Navigate} from "react-router-dom";
+
+
+import Register from './components/Register';
+import Login from './components/Login';
 
 function App() {
-  const [user, setUser] = useState({
-    email:'',
-    password:'',
-    confirmPassword: ''
-  })
-  const [errors, setErrors] = useState([])
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    setUser(Object.assign({}, user, {[e.target.name]: e.target.value}))
-  }
-
-  const register = async (e) => {
-    const response = await fetch('/api/users', {
-       method: 'POST',
-       body: JSON.stringify(user),
-       headers: { 'content-type': 'application/json' }
-    })
-    if(response.status === 400) {
-      const {details} = await response.json()
-      setErrors(details)
-    } else {
-       setErrors([])
-       await login(user.email, user.password)
-    }
-  }
-
-   const login = async (email, password) => {
-     const response = await fetch('/login', {
-        method: 'POST',
-        body: JSON.stringify({email, password}),
-        headers: { 'content-type': 'application/json' }
-     })
-     if(response.status === 400) {
-       const {details} = await response.json()
-       setErrors(details)
-     } else {
-       const jwt = await response.json()
-       localStorage.setItem('jwt', jwt.token)
-     }
-   }
-
+  
   return (
     <div>
       <header>
-        <section class="section">
-        <div class="container">
+        <section className="section">
+        <div className="container">
         <p>
           Some title,yeah?
         </p>
@@ -56,34 +20,14 @@ function App() {
         </section>
       </header>
       <main>
-         <section class="section">
-          <div class="container">
-            <h1 class="title">
-              Register
-            </h1>
-            { errors.length > 0 ? <div class="notification is-danger">
-              <ul>
-                {errors.map(error => {
-                  return <li>
-                    <label for={error.path && error.path.length > 0 ? error.path[0] : ""}>{error.message}</label>
-                  </li>}
-                )}
-              </ul>
-            </div> : null }
-          
-            <div class="field">
-              <label class="label" for="email">Email</label>
-              <input class="input" onChange={handleChange} name="email"  id="email" type="email" placeholder="Email" />
-            </div>
-            <div class="field">
-              <label class="label" for="password">Password</label>
-              <input class="input" onChange={handleChange} name="password" id="password" type="password" />
-            </div>
-            <div class="field">
-              <label class="label" for="confirmPassword">Confirm Password</label>
-              <input class="input" onChange={handleChange} name="confirmPassword" id="confirmPassword" type="password" />
-            </div>
-             <button class="button" onClick={register}>Create Account</button>
+         <section className="section">
+          <div className="container">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+            </Routes>
           </div>
         </section>
       </main>
@@ -93,3 +37,33 @@ function App() {
 }
 
 export default App;
+
+function Dashboard() {
+  const jwt = localStorage.getItem('jwt')
+  return (
+    jwt ? <>
+      <main>
+        <h2>Dashboard</h2>
+      </main>
+
+    </> : 
+     <Navigate replace to='/login' />
+  );
+}
+
+function Home() {
+  const jwt = localStorage.getItem('jwt')
+
+  return (
+    jwt ? <Navigate replace to='/dashboard' />
+    : <>
+      <main>
+        <h2>Welcome to the homepage!</h2>
+        <p>You can do this, I believe in you.</p>
+      </main>
+      <nav>
+        <Link to="/about">About</Link>
+      </nav>
+    </>
+  );
+}
