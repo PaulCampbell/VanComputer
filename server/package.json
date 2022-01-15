@@ -3,9 +3,19 @@
   "version": "0.0.0",
   "description": "A fresh new Architect project!",
   "scripts": {
-    "start": "npx sandbox"
+    "start": "npx sandbox",
+    "test": "tape tests/*-tests.js | tap-spec"
   },
   "devDependencies": {
-    "@architect/architect": "^9.5.4"
+    "tap-spec": "^5.0.0",
+    "tape": "^5.4.0",
+    "tiny-json-http": "^7.3.1"
+  },
+  "dependencies": {
+    "@architect/architect": "^9.5.4",
+    "@architect/functions": "^4.1.1",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "joi": "^17.5.0"
   }
 }

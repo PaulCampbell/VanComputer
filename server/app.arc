@@ -2,9 +2,28 @@
 van-computer
 
 @http
-post /logout # logout
-post /login  # login
+post /logout
+post /login
 
-# @aws
-# profile default
-# region us-west-1
+post /api/users
+get /api/users
+
+post /api/vehicles
+get /api/vehicles
+
+post /api/vehicles/:vehicleId/data
+
+@aws
+region eu-west-1
+
+@tables
+users
+  userId *String
+
+vehicles
+  userId *String
+  vehicleId **String
+
+vehicleData
+  vehicleId *String
+  dateTime **String
