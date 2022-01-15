@@ -11,9 +11,9 @@ const vehicleSchema = Joi.object({
 });
 
 
-exports.handler = arc.http(auth, handler) 
+exports.handler = arc.http.async(auth, handler) 
 
-async function handler (req, res) {
+async function handler (req) {
   const vehicle = req.body
   const options = {
         abortEarly: false,
@@ -23,7 +23,7 @@ async function handler (req, res) {
 
   const { error, value  } = vehicleSchema.validate(vehicle, options);
   if(error) {
-    return res(failedResponse({statusCode: 400, body: error}))
+    return failedResponse({statusCode: 400, body: error})
   }
   const data = await tables()
 
@@ -33,11 +33,12 @@ async function handler (req, res) {
     vehicleId: value.id
   })
 
-  return res({
+  return {
     statusCode: 201,
+    cors:true,
     headers:{
       'content-type': 'application/json'
     },
     body: JSON.stringify(v)
-  })
+  }
 }

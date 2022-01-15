@@ -7,7 +7,7 @@ const failedResponse = require('@architect/shared/failed-response')
 
 exports.handler = arc.http.async(http)
 
-async function http(req) {
+async function http(req, res) {
   const { email, password } = req.body
   if (!email || !password) {
     return failedResponse({statusCode: 401, message: 'login failed'})
@@ -50,6 +50,7 @@ async function http(req) {
       'set-cookie': `access_token=${token}; domain=${process.env.ROOT_URL}; HttpOnly; expires=${oneYearFromNow.toUTCString()};`,
       'content-type': 'application/json'
     },
+    cors: true,
     body: JSON.stringify({
       token,
       claims

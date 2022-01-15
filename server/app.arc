@@ -5,12 +5,14 @@ van-computer
 post /logout
 post /login
 
+
 post /api/users
 get /api/users/:userId
 
 post /api/vehicles
 
 post /api/vehicles/:vehicleId/data
+
 
 @aws
 region eu-west-1
@@ -26,7 +28,6 @@ vehicles
 vehicleData
   vehicleId *String
   dateTime **String
-
 
 @tables-indexes
 users

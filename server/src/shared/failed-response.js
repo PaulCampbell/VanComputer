@@ -14,6 +14,7 @@ module.exports = function ({statusCode = 400, message, body}) {
 
  return {
     statusCode,
+    cors: true,
     headers: {
       'content-type': 'application/json'
     },

@@ -47,6 +47,7 @@ async function http(req) {
 
   return {
     statusCode: 201,
+    cors:true,
     headers: {
       location: `${process.env.ROOT_URL}/users/${userId}`
     }

@@ -4,12 +4,13 @@ const auth = require('@architect/shared/auth')
 
 const failedResponse = require('@architect/shared/failed-response')
 
-exports.handler = arc.http(auth, handler)
 
-async function handler (req, res) {
+exports.handler = arc.http.async(auth, handler) 
+
+async function handler (req) {
   const user = req.user
   if(user.userId !== req.params.userId) {
-    return res(failedResponse({statusCode: 401, message: 'Unauthorized'}))
+    return failedResponse({statusCode: 401, message: 'Unauthorized'})
   }
 
   const data = await tables()
@@ -41,11 +42,12 @@ async function handler (req, res) {
     vehicles: vehiclesWithData
   }
   
-  return res({
+  return {
     statusCode: 200,
+    cors: true,
     headers: {
       'content-type': 'application/json'
     },
     body: JSON.stringify(responseData)
-  })
+  }
 }

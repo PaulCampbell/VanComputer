@@ -3,9 +3,9 @@ let arc = require('@architect/functions')
 const auth = require('@architect/shared/auth')
 const failedResponse = require('@architect/shared/failed-response')
 
-exports.handler = arc.http(auth, handler) 
+exports.handler = arc.http.async(auth, handler) 
 
-async function handler (req, res) {
+async function handler (req) {
   const user = req.user
   const data = await tables()
   const vehicles = await data.vehicles.query({
@@ -17,7 +17,7 @@ async function handler (req, res) {
   })
 
   if(vehicles.Count === 0) {
-    return res(failedResponse({statusCode: 404, message: 'Vehicle not found'}))
+    return failedResponse({statusCode: 404, message: 'Vehicle not found'})
   }
 
   const vehicleData = req.body
@@ -31,9 +31,10 @@ async function handler (req, res) {
       })
     )
  
-  return res({
+  return {
     statusCode: 201,
     headers: { 'content-type': 'application/json' },
+    cors: true,
     body: JSON.stringify(v)
-  })
+  }
 }
