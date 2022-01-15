@@ -21,7 +21,6 @@ async function handler (req, res) {
   }
 
   const vehicleData = JSON.parse(req.body)
-
   const v = await data.vehicleData.put(
     Object.assign(
       {}, 
