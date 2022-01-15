@@ -1,6 +1,7 @@
 const test = require('tape')
 const tiny = require('tiny-json-http')
 const sandbox = require('@architect/sandbox')
+const { createUser } = require('./helper')
 
 test('setup', async t => {
   t.plan(2)
@@ -8,15 +9,7 @@ test('setup', async t => {
   t.ok(true, 'sandbox started on http://localhost:3333')
 
   // create a user for the tests
-  const createUserResponse = await tiny.post({ 
-    url: 'http://localhost:3333/api/users', 
-    data: JSON.stringify({
-      email: 'test@test.com',
-      password: 'password123',
-      confirmPassword: 'password123'
-    })
-  })
-
+  const createUserResponse = await createUser({email: 'test@test.com',password: 'password123'})
   t.ok(createUserResponse, 'user created')
 })
 

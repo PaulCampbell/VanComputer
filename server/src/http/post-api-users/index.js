@@ -12,7 +12,6 @@ exports.handler = arc.http.async(http)
 
 async function http(req) {
   const user = JSON.parse(req.body);
-  
   let data = await tables()
   const options = {
         abortEarly: false,
