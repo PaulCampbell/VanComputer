@@ -15,11 +15,10 @@ exports.loginUser = async function loginUser ({email, password}) {
   let result = await tiny.post({ 
     url: 'http://localhost:3333/login', 
     data: {
-      email: 'test@test.com',
-      password: 'password123'
+      email,
+      password
     }
   })
-
-  const token = result.body.token
-  return token
+  
+  return result.body
 }

@@ -6,7 +6,6 @@ const nJwt = require('njwt');
 const failedResponse = require('@architect/shared/failed-response')
 
 exports.handler = async function http (req) {
-  console.log(`post /login ${req.body}`)
   const { email, password } = JSON.parse(req.body)
   let data = await tables()
   const users = await data.users.query({
@@ -45,7 +44,8 @@ exports.handler = async function http (req) {
       'content-type': 'application/json'
     },
     body: JSON.stringify({
-      token
+      token,
+      claims
     })
   };
 }

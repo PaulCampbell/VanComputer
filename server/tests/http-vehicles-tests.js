@@ -14,8 +14,8 @@ test('setup', async t => {
   const createUserResponse = await createUser({email: 'test@test.com',password: 'password123'})
   t.ok(createUserResponse, 'user created')
 
-  token = await loginUser({email: 'test@test.com',password: 'password123'})
-  
+  const loginResponse = await loginUser({email: 'test@test.com',password: 'password123'})
+  token = loginResponse.token
   t.ok(token, 'user logged in, jwt aquired')
 })
 
