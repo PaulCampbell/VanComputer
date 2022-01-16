@@ -23,10 +23,10 @@ test('setup', async t => {
   t.ok(token, 'user logged in, jwt aquired')
 })
 
-test('get /users/:userId success', async t => {
+test('get /api/me success', async t => {
   t.plan(2)
   let result = await tiny.get({ 
-      url: `http://localhost:3333/api/users/${userId}`,
+      url: `http://localhost:3333/api/me`,
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -35,14 +35,11 @@ test('get /users/:userId success', async t => {
   t.ok(result.body.vehicles, 'got vehicles')
 })
 
-test('get /users/:notMyId - fail', async t => {
+test('get /api/me - fail', async t => {
   t.plan(1)
   try {
     await tiny.get({ 
-      url: `http://localhost:3333/api/users/NOPE`,
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      url: `http://localhost:3333/api/me`
   })
   } catch (ex) {
     t.equal(ex.statusCode, 401, 'got 401 response')

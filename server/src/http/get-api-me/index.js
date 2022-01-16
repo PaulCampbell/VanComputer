@@ -1,3 +1,4 @@
+
 let { tables } = require('@architect/functions')
 let arc = require('@architect/functions')
 const auth = require('@architect/shared/auth')
@@ -9,10 +10,6 @@ exports.handler = arc.http.async(auth, handler)
 
 async function handler (req) {
   const user = req.user
-  if(user.userId !== req.params.userId) {
-    return failedResponse({statusCode: 401, message: 'Unauthorized'})
-  }
-
   const data = await tables()
 
   const vehicles = await data.vehicles.query({

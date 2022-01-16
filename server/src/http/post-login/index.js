@@ -21,15 +21,15 @@ async function http(req, res) {
     ExpressionAttributeValues: { ':email': email.toLowerCase() }
   })
 
-  if (!users.Count === 1) {
-    return failedResponse({statusCode: 401, message: 'login failed'})
+  if (users.Count != 1) {
+    return failedResponse({statusCode: 401, message: 'Email or password incorrect'})
   }
   const [user] = users.Items
 
   const passwordMatch = await bcrypt.compare(password, user.hashedPassword);
 
   if(!passwordMatch) {
-    return failedResponse({statusCode: 401, message: 'login failed'})
+    return failedResponse({statusCode: 401, message: 'Email or password incorrect'})
   }
 
   var claims = {

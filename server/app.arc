@@ -5,14 +5,11 @@ van-computer
 post /logout
 post /login
 
-
 post /api/users
-get /api/users/:userId
+get /api/me
 
 post /api/vehicles
-
 post /api/vehicles/:vehicleId/data
-
 post /api/vehicles/:vehicleId/register
 
 
