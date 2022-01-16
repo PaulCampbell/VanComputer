@@ -37,19 +37,22 @@ function Dashboard({ jwt, apiUrl }) {
                   <li key={vehicle.vehicleId}>
                     <div>
                       <h3 className="subtitle">{vehicle.name}</h3>
-                      {JSON.stringify(vehicle)}
                       {vehicle.activated ? (
                         <div>
                           <p>Last Location:</p>
-                          <MyMapComponent
-                            vehicle={vehicle}
-                            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCRPFYCEf6QQK9PGumCvLgJMiqEmyp15fc&libraries=geometry,drawing,places"
-                            loadingElement={<div style={{ height: `100%` }} />}
-                            containerElement={
-                              <div style={{ height: `400px` }} />
-                            }
-                            mapElement={<div style={{ height: `100%` }} />}
-                          />
+                          {vehicle.vehicleData.length > 0 ? (
+                            <MyMapComponent
+                              vehicle={vehicle}
+                              googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCRPFYCEf6QQK9PGumCvLgJMiqEmyp15fc&libraries=geometry,drawing,places"
+                              loadingElement={
+                                <div style={{ height: `100%` }} />
+                              }
+                              containerElement={
+                                <div style={{ height: `400px` }} />
+                              }
+                              mapElement={<div style={{ height: `100%` }} />}
+                            />
+                          ) : null}
                         </div>
                       ) : (
                         <div>
@@ -105,22 +108,30 @@ function Dashboard({ jwt, apiUrl }) {
 }
 
 const MyMapComponent = withScriptjs(
-  withGoogleMap(({ vehicle }) => (
-    <GoogleMap
-      defaultZoom={8}
-      defaultCenter={{
-        lat: vehicle.vehicleData[0].location.latitude[0],
-        lng: vehicle.vehicleData[0].location.longitude[0],
-      }}
-    >
-      <Marker
-        position={{
-          lat: vehicle.vehicleData[0].location.latitude[0],
-          lng: vehicle.vehicleData[0].location.longitude[0],
-        }}
-      />
-    </GoogleMap>
-  ))
+  withGoogleMap(({ vehicle }) => {
+    const getLongLat = (vehicle) => {
+      // TODO - This is dumb - validate the data coming in and get a
+      //sensible long/lat
+      const location = vehicle.vehicleData[0].location;
+      const lat =
+        location.latitude[1] === "N"
+          ? location.latitude[0]
+          : location.latitude[0] * -1;
+      const lng =
+        location.longitude[1] === "W"
+          ? location.longitude[0] * -1
+          : location.longitude[0];
+      return {
+        lat,
+        lng,
+      };
+    };
+    return (
+      <GoogleMap defaultZoom={8} defaultCenter={getLongLat(vehicle)}>
+        <Marker position={getLongLat(vehicle)} />
+      </GoogleMap>
+    );
+  })
 );
 
 export default Dashboard;
