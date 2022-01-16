@@ -1,8 +1,7 @@
 import  React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 
-function Register() {
-  const jwt = localStorage.getItem('jwt')
+function Register({ jwt, setJwt }) {
    const [user, setUser] = useState({
     email:'',
     password:'',
@@ -42,6 +41,7 @@ function Register() {
      } else {
        const jwt = await response.json()
        localStorage.setItem('jwt', jwt.token)
+        setJwt(jwt.token)
      }
    }
 

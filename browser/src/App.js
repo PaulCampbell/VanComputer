@@ -1,5 +1,5 @@
 import './App.css';
-import * as React from "react";
+import React, { useState } from "react";
 import { Routes, Route, Link, Navigate} from "react-router-dom";
 
 
@@ -7,7 +7,11 @@ import Register from './components/Register';
 import Login from './components/Login';
 
 function App() {
-  
+  const [jwt, setJwt] = useState(localStorage.getItem('jwt'));
+  const logout = () => {
+    localStorage.removeItem('jwt')
+    setJwt(null)
+  }
   return (
     <div>
       <header>
@@ -16,6 +20,7 @@ function App() {
         <p>
           Some title,yeah?
         </p>
+        { jwt ? <a onClick={logout}>Logout</a> : null }
         </div>
         </section>
       </header>
@@ -23,10 +28,10 @@ function App() {
          <section className="section">
           <div className="container">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/" element={<Home jwt={jwt}  />} />
+              <Route path="/register"  element={<Register jwt={jwt} setJwt={setJwt} />} />
+              <Route path="/login" element={<Login jwt={jwt} setJwt={setJwt} />} />
+              <Route path="/dashboard" element={<Dashboard jwt={jwt} />} />
             </Routes>
           </div>
         </section>
@@ -38,8 +43,7 @@ function App() {
 
 export default App;
 
-function Dashboard() {
-  const jwt = localStorage.getItem('jwt')
+function Dashboard({ jwt }) {
   return (
     jwt ? <>
       <main>
@@ -51,9 +55,7 @@ function Dashboard() {
   );
 }
 
-function Home() {
-  const jwt = localStorage.getItem('jwt')
-
+function Home({ jwt }) {
   return (
     jwt ? <Navigate replace to='/dashboard' />
     : <>

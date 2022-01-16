@@ -27,6 +27,10 @@ async function handler (req) {
     return failedResponse({statusCode: 404, message: 'Vehicle not found'})
   }
 
+  const v = vehicles.Items[0]
+  v.activated = true
+  await data.vehicles.put(v)
+
   var claims = {
     iss: process.env.ROOT_URL,  
     sub: `vehicles/${vehicles.Items[0].vehicleId}`,

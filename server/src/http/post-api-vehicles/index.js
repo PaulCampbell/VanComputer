@@ -30,7 +30,8 @@ async function handler (req) {
   const v = await data.vehicles.put({
     userId: req.user.userId,
     name: value.name,
-    vehicleId: hri.random()
+    vehicleId: hri.random(),
+    activated: false
   })
 
   return {

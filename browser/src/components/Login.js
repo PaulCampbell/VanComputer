@@ -1,8 +1,7 @@
 import { useState} from "react";
 import { Link, Navigate} from "react-router-dom";
 
-function Login() {
-  const jwt = localStorage.getItem('jwt')
+function Login({jwt, setJwt }) {
   const [loginModel, setLoginModel] = useState({
     email: "",
     password:""
@@ -26,6 +25,7 @@ function Login() {
      } else {
        const jwt = await response.json()
        localStorage.setItem('jwt', jwt.token)
+       setJwt(jwt.token)
      }
    }
 
