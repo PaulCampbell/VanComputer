@@ -30,7 +30,7 @@ async function handler (req) {
           ':vehicleId': vehicle.vehicleId
         },
         ScanIndexForward: false,
-        Limit: 100
+        Limit: 1
       })
       return Object.assign(vehicle, { vehicleData: vehicleData.Items })
     })

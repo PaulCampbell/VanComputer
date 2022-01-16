@@ -4,6 +4,8 @@ const sandbox = require('@architect/sandbox')
 
 const { createUser, loginUser, createVehicle} = require('./helper')
 
+let vehicleId
+
 let token 
 test('setup', async t => {
   t.plan(4)
@@ -20,11 +22,10 @@ test('setup', async t => {
 
   // create a vehicle for the tests
   const createVehicleResponse = await createVehicle({
-    id: 'vehicle-1',
     name: 'Earnie the Camper',
     token
   })
-
+  vehicleId = createVehicleResponse.body.vehicleId
   t.ok(createVehicleResponse, 'vehicle created')
 })
 
@@ -32,7 +33,7 @@ test('post /vehicle-data/:vehicleId/data - all good!', async t => {
   t.plan(1)
 
   const response = await tiny.post({ 
-    url: 'http://localhost:3333/api/vehicles/vehicle-1/data',
+    url: `http://localhost:3333/api/vehicles/${vehicleId}/data`,
     data: {
       location: { longitude: -122.4194155, latitude: 37.7749295 },
       temperature: 17,

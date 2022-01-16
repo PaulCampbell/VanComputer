@@ -22,11 +22,10 @@ exports.loginUser = async function loginUser ({email, password}) {
   return result.body
 }
 
-exports.createVehicle = async function createVehicle ({id, name, token}) {
+exports.createVehicle = async function createVehicle ({name, token}) {
   const response = await tiny.post({ 
     url: 'http://localhost:3333/api/vehicles', 
     data: {
-      id,
       name,
     },
     headers: {

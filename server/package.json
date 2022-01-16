@@ -16,6 +16,7 @@
     "@architect/functions": "^4.1.1",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
+    "human-readable-ids": "^1.0.4",
     "joi": "^17.5.0",
     "njwt": "^1.2.0"
   }

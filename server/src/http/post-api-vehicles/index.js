@@ -1,12 +1,12 @@
 let { tables } = require('@architect/functions')
 let arc = require('@architect/functions')
 const auth = require('@architect/shared/auth')
-const Joi = require('joi');
+const Joi = require('joi')
+const hri = require('human-readable-ids').hri
 
 const failedResponse = require('@architect/shared/failed-response')
 
 const vehicleSchema = Joi.object({
-  id: Joi.string().min(3).required(),
   name: Joi.string().min(3).required()
 });
 
@@ -30,7 +30,7 @@ async function handler (req) {
   const v = await data.vehicles.put({
     userId: req.user.userId,
     name: value.name,
-    vehicleId: value.id
+    vehicleId: hri.random()
   })
 
   return {
