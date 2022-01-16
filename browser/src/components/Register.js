@@ -1,7 +1,11 @@
 import  React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 
-function Register({ jwt, setJwt }) {
+import ErrorList from './ErrorList';
+
+function Register({ jwt, setJwt, apiUrl }) {
+  const registrationOpen = true;
+
    const [user, setUser] = useState({
     email:'',
     password:'',
@@ -15,7 +19,7 @@ function Register({ jwt, setJwt }) {
   }
 
   const register = async (e) => {
-    const response = await fetch('http://localhost:3333/api/users', {
+    const response = await fetch(`${apiUrl}/api/users`, {
        method: 'POST',
        body: JSON.stringify(user),
        headers: { 'content-type': 'application/json' }
@@ -30,7 +34,7 @@ function Register({ jwt, setJwt }) {
   }
 
   const login = async (email, password) => {
-     const response = await fetch('http://localhost:3333/login', {
+     const response = await fetch(`${apiUrl}/login`, {
         method: 'POST',
         body: JSON.stringify({email, password}),
         headers: { 'content-type': 'application/json' }
@@ -41,26 +45,19 @@ function Register({ jwt, setJwt }) {
      } else {
        const jwt = await response.json()
        localStorage.setItem('jwt', jwt.token)
-        setJwt(jwt.token)
+       setJwt(jwt.token)
      }
    }
 
   return (
      jwt ? <Navigate replace to='/dashboard' /> 
-     : <>
+     : registrationOpen ? 
+     <>
      <h1 className="title">
         Register
       </h1>
-      { errors.length > 0 ? <div className="notification is-danger">
-        <ul>
-          {errors.map(error => {
-            return <li>
-              <label htmlFor={error.path && error.path.length > 0 ? error.path[0] : ""}>{error.message}</label>
-            </li>}
-          )}
-        </ul>
-      </div> : null }
-    
+      <ErrorList errors={errors} />
+      
       <div className="field">
         <label className="label" htmlFor="email">Email</label>
         <input className="input" onChange={handleChange} name="email"  id="email" type="email" placeholder="Email" />
@@ -77,7 +74,13 @@ function Register({ jwt, setJwt }) {
       <nav>
         <Link to="/login">Login</Link>
       </nav>
-    </>
+    </> : <div>
+      <h1 className="title">Registration is invite only...</h1>
+      <p>
+        Sorry - Registration is currently invite only.  If you want access, give us a shout on <a href="https://twitter.com/@paulcampbell_">Twitter</a>
+       &nbsp;and I'll try and get you sorted.
+      </p>
+    </div>
   );
 }
 

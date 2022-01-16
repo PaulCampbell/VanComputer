@@ -1,0 +1,16 @@
+p {
+  margin-bottom: 1em;
+}
+h3 {
+  font-weight: bold;
+}
+
+.subtitle {
+  font-weight: bold;
+}
+
+.config-label {
+  width: 100px;
+  font-weight: bold;
+  display: inline-block;
+}

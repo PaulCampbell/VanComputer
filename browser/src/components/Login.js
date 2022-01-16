@@ -1,7 +1,10 @@
 import { useState} from "react";
 import { Link, Navigate} from "react-router-dom";
 
-function Login({jwt, setJwt }) {
+import ErrorList from './ErrorList';
+
+
+function Login({jwt, setJwt, apiUrl }) {
   const [loginModel, setLoginModel] = useState({
     email: "",
     password:""
@@ -14,12 +17,12 @@ function Login({jwt, setJwt }) {
   }
 
   const login = async () => {
-     const response = await fetch('http://localhost:3333/login', {
+     const response = await fetch(`${apiUrl}/login`, {
         method: 'POST',
         body: JSON.stringify({email: loginModel.email, password: loginModel.password}),
         headers: { 'content-type': 'application/json' }
      })
-     if(response.status === 400) {
+     if(response.status === 401) {
        const {details} = await response.json()
        setErrors(details)
      } else {
@@ -35,15 +38,7 @@ function Login({jwt, setJwt }) {
        <h1 className="title">
         Log in
       </h1>
-      { errors.length > 0 ? <div className="notification is-danger">
-        <ul>
-          {errors.map(error => {
-            return <li>
-              <label htmlFor={error.path && error.path.length > 0 ? error.path[0] : ""}>{error.message}</label>
-            </li>}
-          )}
-        </ul>
-      </div> : null }
+      <ErrorList errors={errors} />
     
       <div className="field">
         <label className="label" htmlFor="email">Email</label>
