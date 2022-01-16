@@ -9,7 +9,7 @@ import Dashboard from './components/Dashboard';
 import AddVehicle from './components/AddVehicle';
 
 function App() {
-  const apiUrl = 'http://localhost:3333';
+  const apiUrl = process.env.REACT_APP_API_ROOT
   const [jwt, setJwt] = useState(localStorage.getItem('jwt'));
   const logout = (e) => {
     e.preventDefault();

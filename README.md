@@ -1,14 +1,23 @@
 # Van Computer
 
-Van location updates for your camper
+Vehicle tracking for your campervan
 
-## Server
+## API
 
 This is a group of functions that run on AWS Lambdas. It uses [Architect](https://arc.codes/) to set up the AWS environment.
 
-## ENV Varibles
+(View the readme)[/server]
 
-### Server
+## Browser
 
-- JWT_SIGNING_KEY: Secure key for signing JWT tokens. New keys can be created by running `node ./scripts/create-signing-key.js`
-- ROOT_URL: The url the server is hosted at... locally we run on `http://localhost:3333`
+This is a little React app. It lets you log in, add new vehicles, see where your van is... all that sort of stuff.
+
+It talks to the API.
+
+(View the readme)[/browser]
+
+## ESP32
+
+This is the software to turn an ESP32 into a vehicle tracker. It also talks to the API
+
+(View the readme)[/esp32]
