@@ -2,7 +2,7 @@
 
 This is some code for esp32 to interact with the Van Computer API. It sends GPS coordinates (and probably other data) to the API so you can see where your van is (and probably other things).
 
-It's tested on a knock off TTGO, a bit like (this one)[https://www.amazon.co.uk/TTGO-T-Call-Wireless-Antenna-SIM800L-M5Stick/dp/B07VFPBRJ4] (except it's a knock off...) connected to a (NEO 6m GPS thing)[https://www.ebay.co.uk/itm/402304782548] as I had those lying around.
+It's tested on a knock off TTGO, a bit like [this one](https://www.amazon.co.uk/TTGO-T-Call-Wireless-Antenna-SIM800L-M5Stick/dp/B07VFPBRJ4) (except it's a knock off...) connected to a [NEO 6m GPS thing](https://www.ebay.co.uk/itm/402304782548) as I had those lying around.
 
 Here's roughly what it does when you boot it:
 

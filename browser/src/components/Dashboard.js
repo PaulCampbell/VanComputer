@@ -43,7 +43,7 @@ function Dashboard({ jwt, apiUrl }) {
                           {vehicle.vehicleData.length > 0 ? (
                             <MyMapComponent
                               vehicle={vehicle}
-                              googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCRPFYCEf6QQK9PGumCvLgJMiqEmyp15fc&libraries=geometry,drawing,places"
+                              googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&key=${process.env.REACT_APP_MAPS_KEY}&libraries=geometry,drawing,places`}
                               loadingElement={
                                 <div style={{ height: `100%` }} />
                               }
