@@ -26,3 +26,6 @@ yarn-error.log*
 /server/public
 
 /server/preferences.arc
+
+/esp32/myconfig.py
+/esp32/venv
