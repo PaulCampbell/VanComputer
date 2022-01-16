@@ -30,21 +30,24 @@ def main():
 
 def gps_has_signal(gps):
     print(gps.latitude[0])
+    # dumb check to see if we have a signal that looks like it makes sense
     return gps.satellites_in_use > 2 and gps.latitude[0] != 0.0
 
 def get_token():
     data={}
     data['userId'] = config.USER_ID
-    token_url = '%s/vehicles/%s/register'%(config.API_URL, config.VAN_ID)
-    print('getting token ', token_url)
+    token_url = '%s/api/vehicles/%s/register'%(config.API_URL, config.VAN_ID)
+    payload = ujson.dumps(data)
+    print('getting token ', token_url, payload)
     response = urequests.post(
             token_url,
             headers = {
                 'content-type': 'application/json',
             },
-            data = ujson.dumps(data)
+            data = payload
 
         )
+    print(response)
     response_body = response.json()
     print(response_body)
     return response_body['token']
@@ -59,7 +62,7 @@ def post_data(gps):
     data['location']['altitude'] = gps.altitude
     data['location']['speed'] = gps.speed_string('kph')
     payload = ujson.dumps(data)
-    data_url = '%s/vehicles/%s/data'%(config.API_URL, config.VAN_ID)
+    data_url = '%s/api/vehicles/%s/data'%(config.API_URL, config.VAN_ID)
 
     response = urequests.post(
             data_url,
@@ -69,6 +72,7 @@ def post_data(gps):
             },
             data = payload
     )
+    print(response)
 
 
 def connect_to_wifi():

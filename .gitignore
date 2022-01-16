@@ -23,10 +23,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-
 /server/public
 
 /server/preferences.arc
 
 /esp32/myconfig.py
 /esp32/venv
+config.py
+
+sam.json
+sam.yaml

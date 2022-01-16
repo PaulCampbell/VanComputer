@@ -1,50 +1,48 @@
+let { tables } = require("@architect/functions");
+let arc = require("@architect/functions");
+const auth = require("@architect/shared/auth");
 
-let { tables } = require('@architect/functions')
-let arc = require('@architect/functions')
-const auth = require('@architect/shared/auth')
+const failedResponse = require("@architect/shared/failed-response");
 
-const failedResponse = require('@architect/shared/failed-response')
+exports.handler = arc.http.async(auth, handler);
 
-
-exports.handler = arc.http.async(auth, handler) 
-
-async function handler (req) {
-  const user = req.user
-  const data = await tables()
+async function handler(req) {
+  const user = req.user;
+  const data = await tables();
 
   const vehicles = await data.vehicles.query({
-    KeyConditionExpression: 'userId = :userId',
+    KeyConditionExpression: "userId = :userId",
     ExpressionAttributeValues: {
-      ':userId': user.userId
-    }
-  })
+      ":userId": user.userId,
+    },
+  });
 
   const vehiclesWithData = await Promise.all(
-    vehicles.Items.map(async vehicle => {
+    vehicles.Items.map(async (vehicle) => {
       const vehicleData = await data.vehicleData.query({
-        KeyConditionExpression: 'vehicleId = :vehicleId',
+        KeyConditionExpression: "vehicleId = :vehicleId",
         ExpressionAttributeValues: {
-          ':vehicleId': vehicle.vehicleId
+          ":vehicleId": vehicle.vehicleId,
         },
         ScanIndexForward: false,
-        Limit: 1
-      })
-      return Object.assign(vehicle, { vehicleData: vehicleData.Items })
+        Limit: 1,
+      });
+      return Object.assign(vehicle, { vehicleData: vehicleData.Items });
     })
-  )
+  );
 
   const responseData = {
     userId: user.userId,
     email: user.email,
-    vehicles: vehiclesWithData
-  }
-  
+    vehicles: vehiclesWithData,
+  };
+
   return {
     statusCode: 200,
     cors: true,
     headers: {
-      'content-type': 'application/json'
+      "content-type": "application/json",
     },
-    body: JSON.stringify(responseData)
-  }
+    body: JSON.stringify(responseData),
+  };
 }
