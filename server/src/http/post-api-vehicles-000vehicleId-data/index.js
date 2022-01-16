@@ -20,6 +20,7 @@ async function handler (req) {
     return failedResponse({statusCode: 404, message: 'Vehicle not found'})
   }
 
+
   const vehicleData = req.body
   const v = await data.vehicleData.put(
     Object.assign(

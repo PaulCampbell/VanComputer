@@ -50,6 +50,9 @@ async function http(req) {
     cors:true,
     headers: {
       location: `${process.env.ROOT_URL}/users/${userId}`
-    }
+    },
+    body: JSON.stringify({ 
+      userId
+    })
   };
 };

@@ -13,6 +13,8 @@ post /api/vehicles
 
 post /api/vehicles/:vehicleId/data
 
+post /api/vehicles/:vehicleId/register
+
 
 @aws
 region eu-west-1
