@@ -6,7 +6,6 @@ const failedResponse = require('@architect/shared/failed-response')
 exports.handler = arc.http.async(vehicleAuth, handler) 
 
 async function handler (req) {
-
   if(req.params.vehicleId != req.vehicleId) {
     return failedResponse({statusCode: 404, message: 'Vehicle not found'})
   }
@@ -24,8 +23,9 @@ async function handler (req) {
     return failedResponse({statusCode: 404, message: 'Vehicle not found'})
   }
 
-
   const vehicleData = req.body
+  const expires = new Date()
+  expires.setDate(expires.getDate() + 2)
   const v = await data.vehicleData.put(
     Object.assign(
       {}, 
@@ -33,6 +33,7 @@ async function handler (req) {
       {
         vehicleId: req.params.vehicleId,
         dateTime: new Date().toISOString(),
+        expires: expires.getTime()
       })
     )
  

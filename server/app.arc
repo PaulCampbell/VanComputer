@@ -30,6 +30,7 @@ vehicles
 vehicleData
   vehicleId *String
   dateTime **String
+  expires TTL
 
 @tables-indexes
 users
