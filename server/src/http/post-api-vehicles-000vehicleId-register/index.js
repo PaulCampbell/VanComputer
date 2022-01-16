@@ -30,7 +30,8 @@ async function handler (req) {
   var claims = {
     iss: process.env.ROOT_URL,  
     sub: `vehicles/${vehicles.Items[0].vehicleId}`,
-    scope: "self"
+    scope: "self",
+    forUser: req.body.userId
   }
   const jwt = nJwt.create(claims,process.env.JWT_SIGNING_KEY);
   const oneYearFromNow = new Date();

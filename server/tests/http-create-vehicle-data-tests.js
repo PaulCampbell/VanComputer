@@ -8,7 +8,7 @@ let vehicleId
 
 let token 
 test('setup', async t => {
-  t.plan(4)
+  t.plan(5)
   await sandbox.start()
   t.ok(true, 'sandbox started on http://localhost:3333')
 
@@ -17,16 +17,24 @@ test('setup', async t => {
   t.ok(createUserResponse, 'user created')
 
   const loginResponse = await loginUser({email: 'test@test.com',password: 'password123'})
-  token = loginResponse.token
-  t.ok(token, 'user logged in, jwt aquired')
+  loginResponse.token
+  t.ok(loginResponse.token, 'user logged in, jwt aquired')
 
   // create a vehicle for the tests
   const createVehicleResponse = await createVehicle({
     name: 'Earnie the Camper',
-    token
+    token: loginResponse.token
   })
   vehicleId = createVehicleResponse.body.vehicleId
   t.ok(createVehicleResponse, 'vehicle created')
+
+  // get a vehicle token
+  const vehicleTokenResponse = await tiny.post({
+    url: `http://localhost:3333/api/vehicles/${vehicleId}/register`,
+    data: { userId: createUserResponse.body.userId }
+  })
+  token = vehicleTokenResponse.body.token
+  t.ok(token)
 })
 
 test('post /vehicle-data/:vehicleId/data - all good!', async t => {
