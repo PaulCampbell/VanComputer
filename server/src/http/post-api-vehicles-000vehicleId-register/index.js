@@ -41,7 +41,6 @@ async function handler (req) {
   const oneYearFromNow = new Date();
   oneYearFromNow.setYear(oneYearFromNow.getFullYear() + 1);
   jwt.setExpiration(oneYearFromNow);
-  
   const token = jwt.compact();
 
   return {
