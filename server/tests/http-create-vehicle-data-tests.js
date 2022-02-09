@@ -36,7 +36,7 @@ test("setup", async (t) => {
 
   // get a vehicle token
   const vehicleTokenResponse = await tiny.post({
-    url: `http://localhost:3333/api/vehicles/${vehicleId}/register`,
+    url: `http://localhost:3333/api/vehicles/${vehicleId}/token`,
     data: { userId: createUserResponse.body.userId },
   });
   token = vehicleTokenResponse.body.token;
@@ -49,14 +49,29 @@ test("post /vehicle-data/:vehicleId/data - all good!", async (t) => {
     url: `http://localhost:3333/api/vehicles/${vehicleId}/data?ratelimit=false`,
     data: {
       location: { longitude: -122.4194155, latitude: 37.7749295 },
-      temperature: 17,
-      humidity: 0.5,
     },
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
   t.ok(response, "got good response");
+});
+
+test("post /vehicle-data/:vehicleId/data - body validation failed!", async (t) => {
+  t.plan(1);
+  try {
+    const response = await tiny.post({
+      url: `http://localhost:3333/api/vehicles/${vehicleId}/data?ratelimit=false`,
+      data: {
+        badData: { nope: true },
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (ex) {
+    t.equal(ex.statusCode, 422);
+  }
 });
 
 test("post /vehicle-data/:not-my-id/data - nope", async (t) => {
@@ -66,8 +81,6 @@ test("post /vehicle-data/:not-my-id/data - nope", async (t) => {
       url: "http://localhost:3333/api/vehicles/not-my-id/data?ratelimit=false",
       data: {
         location: { longitude: -122.4194155, latitude: 37.7749295 },
-        temperature: 17,
-        humidity: 0.5,
       },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -84,8 +97,6 @@ test("post /vehicle-data/:vehicleId/data - rate limit exceeded... 429", async (t
     url: `http://localhost:3333/api/vehicles/${vehicleId}/data?ratelimit=false`,
     data: {
       location: { longitude: -122.4194155, latitude: 37.7749295 },
-      temperature: 17,
-      humidity: 0.5,
     },
     headers: {
       Authorization: `Bearer ${token}`,
@@ -93,14 +104,11 @@ test("post /vehicle-data/:vehicleId/data - rate limit exceeded... 429", async (t
   });
 
   t.ok(response, "got good response");
-
   try {
     await tiny.post({
       url: `http://localhost:3333/api/vehicles/${vehicleId}/data`,
       data: {
         location: { longitude: -122.4194155, latitude: 37.7749295 },
-        temperature: 17,
-        humidity: 0.5,
       },
       headers: {
         Authorization: `Bearer ${token}`,

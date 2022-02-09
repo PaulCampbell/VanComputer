@@ -1,9 +1,20 @@
+let Joi = require("joi");
 let { tables } = require("@architect/functions");
 let arc = require("@architect/functions");
 const vehicleAuth = require("@architect/shared/vehicle-auth");
 const failedResponse = require("@architect/shared/failed-response");
 
 exports.handler = arc.http.async(vehicleAuth, handler);
+
+const locationSchema = Joi.object({
+  longitude: Joi.number().required(),
+  latitude: Joi.number().required(),
+  altitude: Joi.number(),
+  speed: Joi.number(),
+});
+const schema = Joi.object({
+  location: locationSchema,
+});
 
 async function handler(req) {
   if (req.params.vehicleId != req.vehicleId) {
@@ -28,6 +39,12 @@ async function handler(req) {
   }
 
   const vehicleData = req.body;
+
+  const value = schema.validate(vehicleData, { abortEarly: false });
+  if (value.error) {
+    return failedResponse({ statusCode: 422, body: value.error });
+  }
+
   const expires = new Date();
   expires.setDate(expires.getDate() + 2);
   const v = await data.vehicleData.put(
@@ -64,10 +81,6 @@ const rateExceeded = async (req, data) => {
 
   const now = new Date();
   const twoMinutesAgo = new Date(now.getTime() - 2 * 60000);
-  if (existingData.Count === 1) {
-    console.log(twoMinutesAgo);
-    console.log(new Date(existingData.Items[0].dateTime));
-  }
   if (
     existingData.Count === 1 &&
     new Date(existingData.Items[0].dateTime) > twoMinutesAgo

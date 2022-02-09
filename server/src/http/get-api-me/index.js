@@ -2,8 +2,6 @@ let { tables } = require("@architect/functions");
 let arc = require("@architect/functions");
 const auth = require("@architect/shared/auth");
 
-const failedResponse = require("@architect/shared/failed-response");
-
 exports.handler = arc.http.async(auth, handler);
 
 async function handler(req) {
