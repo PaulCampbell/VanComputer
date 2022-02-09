@@ -10,7 +10,7 @@ get /api/me
 
 post /api/vehicles
 post /api/vehicles/:vehicleId/data
-post /api/vehicles/:vehicleId/register
+post /api/vehicles/:vehicleId/token
 
 
 @aws
