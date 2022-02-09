@@ -110,8 +110,6 @@ function Dashboard({ jwt, apiUrl }) {
 const MyMapComponent = withScriptjs(
   withGoogleMap(({ vehicle }) => {
     const getLongLat = (vehicle) => {
-      // TODO - This is dumb - validate the data coming in and get a
-      //sensible long/lat
       const location = vehicle.vehicleData[0].location;
 
       return {
