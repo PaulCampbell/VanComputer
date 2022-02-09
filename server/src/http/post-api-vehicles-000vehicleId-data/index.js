@@ -75,7 +75,7 @@ const rateExceeded = async (req, data) => {
     ExpressionAttributeValues: {
       ":vehicleId": req.vehicleId,
     },
-    ScanIndexForward: false,
+    ScanIndexForward: true,
     Limit: 1,
   });
 

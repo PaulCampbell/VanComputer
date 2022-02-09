@@ -22,7 +22,7 @@ async function handler(req) {
         ExpressionAttributeValues: {
           ":vehicleId": vehicle.vehicleId,
         },
-        ScanIndexForward: false,
+        ScanIndexForward: true,
         Limit: 1,
       });
       return Object.assign(vehicle, { vehicleData: vehicleData.Items });

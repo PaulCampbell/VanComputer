@@ -45,7 +45,9 @@ Headers: {
 body: {
   location: {
     longitude: 53.71588,
-    latitude: -1.8590
+    latitude: -1.8590,
+    speed: 12,
+    altitude: 5
   }
 }
 ```
@@ -67,14 +69,6 @@ POST /api/vehicles/:vehicleId/data
 Headers: {
   Authorization: 'Bearer ${token}'
 }
-Body: {
-  location: {
-    latitude: 1.123,
-    longitude: 0.54345,
-    speed: 12,
-    altitude: 5
-  }
-}
 ```
 
 **RESPONSE**
@@ -84,7 +78,16 @@ status: 200 OK
 
 body
 {
-
+  "userId":"123",
+  "vehicles":[{
+    "vehicleId":"orange-robin-723",
+    "name":"Ernie",
+    "userId":"68723",
+    "vehicleData":[
+      {
+        "location":{"altitude":203,"speed":"0.692648","latitude":53.72047,"longitude":1.903311},
+      }]
+    }
 }
 ```
 
